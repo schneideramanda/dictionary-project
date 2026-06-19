@@ -1,0 +1,36 @@
+services:
+  redis:
+    image: redis:7
+    container_name: dictionary-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build:
+      context: ./server
+    container_name: dictionary-backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./server:/app
+      - backend-node-modules:/app/node_modules
+    env_file:
+      - ./server/.env
+    environment:
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  backend-node-modules:
