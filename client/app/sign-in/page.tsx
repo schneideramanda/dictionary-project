@@ -14,13 +14,14 @@ import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { initialValues, SignInForm, signInSchema } from '@/lib/schemas/auth';
+import { signInInitialValues, SignInForm, signInSchema } from '@/lib/schemas/auth';
 import { useSignIn } from '@/hooks/useAuth';
+import { motion } from 'framer-motion';
 
 export default function SignIn() {
   const form = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
-    defaultValues: initialValues,
+    defaultValues: signInInitialValues,
     mode: 'onChange',
   });
 
@@ -34,7 +35,11 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex flex-1 min-h-[calc(100vh - 4rem)] items-center justify-center p-4">
+    <motion.div
+      className="flex flex-1 min-h-[calc(100vh - 4rem)] items-center justify-center p-4"
+      initial={{ opacity: 0, x: -200 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ opacity: { duration: 0.8 }, x: { duration: 0.5 } }}>
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
@@ -96,6 +101,6 @@ export default function SignIn() {
           </p>
         </CardFooter>
       </Card>
-    </div>
+    </motion.div>
   );
 }
