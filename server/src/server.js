@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 import { connectDB, disconnectDB } from './config/db.js';
 import { ensureAppSchema } from './config/schema.js';
 import { disconnectRedis } from './config/redis.js';
+import cors from 'cors';
 
 import entriesRouter from './routes/entries.js';
 import authRouter from './routes/auth.js';
@@ -19,6 +20,13 @@ try {
 }
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
 
 // Body parsing middlewares
 app.use(express.json());
