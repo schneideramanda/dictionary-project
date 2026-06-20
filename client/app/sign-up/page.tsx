@@ -14,24 +14,29 @@ import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
-import { useSignUp } from '@/hooks/useAuth';
 import { SignUpForm, signUpInitialValues, signUpSchema } from '@/lib/schemas/auth';
 import { motion } from 'framer-motion';
+import { useTransition } from 'react';
+import { signUpAction } from '../actions/auth';
+import { toast } from 'sonner';
 
 export default function SignUpPage() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
     defaultValues: signUpInitialValues,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
-  const { mutateAsync, isPending } = useSignUp();
-  const onSubmit = async (data: SignUpForm) => {
-    try {
-      await mutateAsync(data);
-    } catch (error) {
-      console.error('Sign-up error:', error);
-    }
+  const onSubmit = (values: SignUpForm) => {
+    startTransition(async () => {
+      const result = await signUpAction(values);
+
+      if (result?.error) {
+        toast.error(result.error);
+      }
+    });
   };
 
   return (

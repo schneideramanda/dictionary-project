@@ -2,26 +2,47 @@
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { entriesApi } from '@/lib/api/entries';
-import { useQuery } from '@tanstack/react-query';
 import { ChevronLeftIcon, StarIcon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import WordDetailSkeleton from './skeleton';
-import { useWordDetail } from '@/hooks/useWordDetail';
+import { useEntry } from '@/hooks/useEntries';
+import { useMyFavorites } from '@/hooks/useUser';
+import { favoriteAction, unfavoriteAction } from '@/app/actions/entries';
+import { useTransition } from 'react';
 
 export default function WordDetail() {
-  const { word } = useParams();
+  const { word: wordParam } = useParams();
   const router = useRouter();
 
-  const { handleFavorite, isFavorite, isPending: favoritePending } = useWordDetail(word as string);
+  const [isPending, startTransition] = useTransition();
 
-  const { data, isPending } = useQuery({
-    queryKey: ['entry', word],
-    queryFn: async () => await entriesApi.getEntry((word as string) ?? ''),
-  });
+  const word = (wordParam as string) ?? '';
 
-  if (isPending) return <WordDetailSkeleton />;
+  const { data, isLoading: entryDetailLoading } = useEntry(word);
+  const {
+    data: favorites,
+    isLoading: favoritesLoading,
+    mutate: mutateFavorites,
+  } = useMyFavorites();
+
+  const isFavorite = !!favorites?.results.find(favorite => favorite.word === word);
+  const isLoading = entryDetailLoading || favoritesLoading || isPending;
+
+  const handleFavorite = () => {
+    if (isFavorite) {
+      startTransition(async () => {
+        await unfavoriteAction(word);
+      });
+    } else {
+      startTransition(async () => {
+        await favoriteAction(word);
+      });
+    }
+    mutateFavorites(undefined, { revalidate: true });
+  };
+
+  if (isLoading) return <WordDetailSkeleton />;
 
   return (
     <div className="px-6 py-8">
@@ -30,7 +51,7 @@ export default function WordDetail() {
           <ChevronLeftIcon className="text-foreground/60" />
         </Button>
         <h1 className="text-4xl font-bold capitalize">{word}</h1>
-        <Button variant="ghost" size="icon" disabled={favoritePending} onClick={handleFavorite}>
+        <Button variant="ghost" size="icon" disabled={isLoading} onClick={handleFavorite}>
           <StarIcon
             fill={isFavorite ? 'yellow' : 'transparent'}
             className={`${isFavorite ? 'text-foreground/60 dark:text-black size-8' : 'size-6'}`}

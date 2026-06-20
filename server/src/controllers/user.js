@@ -30,8 +30,23 @@ const listUserWords = async (req, res, tableName) => {
   });
 };
 
+const getUser = async (req, res) => {
+  const userId = req.user?.id;
+
+  const userResult = await dbQuery('SELECT name, email FROM "User" WHERE "id" = $1 LIMIT 1', [
+    userId,
+  ]);
+  const user = userResult.rows[0];
+
+  res.status(200).json({
+    id: userId,
+    name: user.name,
+    email: user.email,
+  });
+};
+
 const getMyHistory = async (req, res) => listUserWords(req, res, 'UserSearchHistory');
 
 const getMyFavorites = async (req, res) => listUserWords(req, res, 'UserFavoriteWord');
 
-export { getMyFavorites, getMyHistory };
+export { getUser, getMyFavorites, getMyHistory };

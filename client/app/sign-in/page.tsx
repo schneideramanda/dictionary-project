@@ -1,5 +1,6 @@
 'use client';
 
+import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -15,23 +16,27 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { signInInitialValues, SignInForm, signInSchema } from '@/lib/schemas/auth';
-import { useSignIn } from '@/hooks/useAuth';
 import { motion } from 'framer-motion';
+import { signInAction } from '@/app/actions/auth';
+import { toast } from 'sonner';
 
 export default function SignIn() {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
     defaultValues: signInInitialValues,
-    mode: 'onChange',
+    mode: 'onTouched',
   });
 
-  const { mutateAsync, isPending } = useSignIn();
-  const onSubmit = async (data: SignInForm) => {
-    try {
-      await mutateAsync(data);
-    } catch (error) {
-      console.error('Sign-in error:', error);
-    }
+  const onSubmit = (values: SignInForm) => {
+    startTransition(async () => {
+      const result = await signInAction(values);
+
+      if (result?.error) {
+        toast.error(result.error);
+      }
+    });
   };
 
   return (
@@ -40,7 +45,7 @@ export default function SignIn() {
       initial={{ opacity: 0, x: -200 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ opacity: { duration: 0.8 }, x: { duration: 0.5 } }}>
-      <Card className="w-full max-w-md shadow-lg">
+      <Card className="w-full max-w-md shadow-lg border-b border-secondary">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>

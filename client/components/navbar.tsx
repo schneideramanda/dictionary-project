@@ -1,6 +1,7 @@
 import { BookAIcon } from 'lucide-react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
+import UserAvatar from './user-avatar';
 
 export default function Navbar() {
   return (
@@ -10,8 +11,9 @@ export default function Navbar() {
           <BookAIcon className="text-white" />
           <p className="text-lg text-white font-semibold">Dictionary</p>
         </Link>
-        <div>
+        <div className="flex items-center gap-2">
           <ThemeToggle />
+          <UserAvatar />
         </div>
       </div>
     </nav>
