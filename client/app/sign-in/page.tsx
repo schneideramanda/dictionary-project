@@ -19,9 +19,13 @@ import { signInInitialValues, SignInForm, signInSchema } from '@/lib/schemas/aut
 import { motion } from 'framer-motion';
 import { signInAction } from '@/app/actions/auth';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useSWRConfig } from 'swr';
 
 export default function SignIn() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const form = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
@@ -36,6 +40,9 @@ export default function SignIn() {
       if (result?.error) {
         toast.error(result.error);
       }
+
+      await mutate('/user/me');
+      router.push('/');
     });
   };
 

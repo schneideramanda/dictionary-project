@@ -19,9 +19,13 @@ import { motion } from 'framer-motion';
 import { useTransition } from 'react';
 import { signUpAction } from '../actions/auth';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { useSWRConfig } from 'swr';
 
 export default function SignUpPage() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const { mutate } = useSWRConfig();
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -36,6 +40,9 @@ export default function SignUpPage() {
       if (result?.error) {
         toast.error(result.error);
       }
+
+      await mutate('/user/me');
+      router.push('/');
     });
   };
 

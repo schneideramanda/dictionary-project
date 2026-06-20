@@ -24,7 +24,7 @@ export default function EntryItem({ entry, idx, includeFavorite = false }: Entry
 
   const itemDetails = {
     word: typeof entry === 'string' ? entry : entry.word,
-    date: typeof entry === 'string' ? null : formatDate(entry.added, 'PPPPp'),
+    date: typeof entry === 'string' ? null : formatDate(entry.added, 'hh:ss'),
   };
 
   return (

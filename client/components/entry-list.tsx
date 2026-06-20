@@ -3,6 +3,8 @@ import EntryItem from './entry-item';
 import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
 import { Skeleton } from './ui/skeleton';
 import { PaginatedResult, WordEntry } from '@/types/api';
+import { useEffect, useMemo } from 'react';
+import { format } from 'date-fns';
 
 function ListSkeleton() {
   return (
@@ -32,41 +34,101 @@ export default function EntryList({
   const entries = data?.results;
   const { hasNext, hasPrev, totalPages } = data ?? {};
 
+  const groupedEntries = useMemo(() => {
+    return (
+      entries &&
+      entries.reduce(
+        (acc, item) => {
+          if (typeof item === 'string') return acc;
+
+          const dateKey = format(item.added, 'yyyy-MM-dd');
+          if (!acc[dateKey]) {
+            acc[dateKey] = [];
+          }
+          acc[dateKey].push(item);
+
+          return acc;
+        },
+        {} as Record<string, WordEntry[]>,
+      )
+    );
+  }, [entries]);
+
+  const sortedDates = Object.keys(groupedEntries ?? {}).sort(
+    (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+  );
+
+  // Automatically scroll to top whenever the page changes
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [page]);
+
   if (isLoading) return <ListSkeleton />;
 
   return (
     <div className="flex flex-col gap-4">
-      <ul className="flex flex-col gap-4 mt-6">
-        {entries && entries.length > 0 ? (
-          entries.map((entry, idx) => (
-            <EntryItem key={idx} entry={entry} idx={idx} includeFavorite={includeFavorite} />
-          ))
+      <ul className="flex flex-col gap-10 mt-6">
+        {entries && entries?.length > 0 ? (
+          sortedDates && sortedDates.length > 0 ? (
+            sortedDates.map(date => (
+              <div key={date}>
+                {sortedDates.length > 1 && (
+                  <h3 className="text-sm font-medium mb-4 ml-2 text-foreground/60">
+                    {format(date, 'PP')}
+                  </h3>
+                )}
+                <div className="space-y-4">
+                  {groupedEntries &&
+                    groupedEntries[date].map((entry, idx) => (
+                      <EntryItem
+                        key={idx}
+                        entry={entry}
+                        idx={idx}
+                        includeFavorite={includeFavorite}
+                      />
+                    ))}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="space-y-4">
+              {entries.map((entry, idx) => (
+                <EntryItem key={idx} entry={entry} idx={idx} includeFavorite={includeFavorite} />
+              ))}
+            </div>
+          )
         ) : (
           <li className="text-muted-foreground text-center">No entries found.</li>
         )}
       </ul>
-      <Pagination>
-        <PaginationContent className="gap-3">
-          <PaginationItem
-            onClick={() => setPage(page - 1)}
-            aria-disabled={!hasPrev ? true : undefined}
-            className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
-            <ChevronLeftIcon aria-hidden="true" size={16} />
-          </PaginationItem>
-          <PaginationItem>
-            <p aria-live="polite" className="text-muted-foreground text-sm">
-              Page <span className="text-foreground">{page}</span> of{' '}
-              <span className="text-foreground">{totalPages}</span>
-            </p>
-          </PaginationItem>
-          <PaginationItem
-            onClick={() => setPage(page + 1)}
-            aria-disabled={!hasNext ? true : undefined}
-            className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
-            <ChevronRightIcon aria-hidden="true" size={16} />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      {entries && entries.length > 0 && (
+        <Pagination>
+          <PaginationContent className="gap-3">
+            <PaginationItem
+              onClick={() => setPage(page - 1)}
+              aria-disabled={!hasPrev ? true : undefined}
+              className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
+              <ChevronLeftIcon aria-hidden="true" size={16} />
+            </PaginationItem>
+            <PaginationItem>
+              <p aria-live="polite" className="text-muted-foreground text-sm">
+                Page <span className="text-foreground">{page}</span> of{' '}
+                <span className="text-foreground">{totalPages}</span>
+              </p>
+            </PaginationItem>
+            <PaginationItem
+              onClick={() => setPage(page + 1)}
+              aria-disabled={!hasNext ? true : undefined}
+              className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
+              <ChevronRightIcon aria-hidden="true" size={16} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }

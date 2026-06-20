@@ -51,7 +51,7 @@ export async function signUpAction(values: SignUpForm): Promise<AuthActionState>
   }
 
   await applySetCookieFromResponse(res);
-  redirect('/');
+  return { error: null };
 }
 
 export async function signInAction(values: SignInForm): Promise<AuthActionState> {
@@ -67,7 +67,7 @@ export async function signInAction(values: SignInForm): Promise<AuthActionState>
   }
 
   await applySetCookieFromResponse(res);
-  redirect('/');
+  return { error: null };
 }
 
 export async function logoutAction(): Promise<void> {

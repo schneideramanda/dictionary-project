@@ -30,7 +30,7 @@ export default function UserDetail() {
               {getUserInitials(user?.name ?? '')}
             </Avatar>
             <CopyContent value={user?.id ?? ''}>
-              <p className="text-sm text-foreground/60">{user?.id}</p>
+              <p className="text-sm text-foreground/60 text-center">{user?.id}</p>
             </CopyContent>
           </div>
           <Separator className="my-8" />
