@@ -6,13 +6,15 @@ import { useRouter } from 'next/navigation';
 import { Card } from './ui/card';
 import { WordEntry } from '@/types/api';
 import { format as formatDate } from 'date-fns';
+import FavoriteButton from './favorite-button';
 
 interface EntryItemProps {
   entry: string | WordEntry;
   idx: number;
+  includeFavorite?: boolean;
 }
 
-export default function EntryItem({ entry, idx }: EntryItemProps) {
+export default function EntryItem({ entry, idx, includeFavorite = false }: EntryItemProps) {
   const router = useRouter();
 
   const arrowAnimation = {
@@ -45,9 +47,12 @@ export default function EntryItem({ entry, idx }: EntryItemProps) {
             <p className="text-lg font-medium capitalize">{itemDetails?.word}</p>
             {itemDetails?.date && <p className="text-sm text-foreground/60">{itemDetails.date}</p>}
           </div>
-          <motion.div variants={arrowAnimation}>
-            <ChevronRightIcon className="text-foreground/40 size-4" />
-          </motion.div>
+          <div className="flex items-center gap-2">
+            {includeFavorite && <FavoriteButton word={itemDetails?.word} />}
+            <motion.div variants={arrowAnimation}>
+              <ChevronRightIcon className="text-foreground/40 size-4" />
+            </motion.div>
+          </div>
         </motion.div>
       </Card>
     </motion.li>

@@ -2,61 +2,33 @@
 
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { ChevronLeftIcon, StarIcon } from 'lucide-react';
+import { ChevronLeftIcon } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import WordDetailSkeleton from './skeleton';
 import { useEntry } from '@/hooks/useEntries';
-import { useMyFavorites } from '@/hooks/useUser';
-import { favoriteAction, unfavoriteAction } from '@/app/actions/entries';
-import { useTransition } from 'react';
+import FavoriteButton from '@/components/favorite-button';
 
 export default function WordDetail() {
   const { word: wordParam } = useParams();
   const router = useRouter();
 
-  const [isPending, startTransition] = useTransition();
-
   const word = (wordParam as string) ?? '';
 
   const { data, isLoading: entryDetailLoading } = useEntry(word);
-  const {
-    data: favorites,
-    isLoading: favoritesLoading,
-    mutate: mutateFavorites,
-  } = useMyFavorites();
 
-  const isFavorite = !!favorites?.results.find(favorite => favorite.word === word);
-  const isLoading = entryDetailLoading || favoritesLoading || isPending;
-
-  const handleFavorite = () => {
-    if (isFavorite) {
-      startTransition(async () => {
-        await unfavoriteAction(word);
-      });
-    } else {
-      startTransition(async () => {
-        await favoriteAction(word);
-      });
-    }
-    mutateFavorites(undefined, { revalidate: true });
-  };
+  const isLoading = entryDetailLoading;
 
   if (isLoading) return <WordDetailSkeleton />;
 
   return (
     <div className="px-6 py-8">
       <div className="flex items-center justify-between">
-        <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
+        <Button variant="ghost" size="icon" onClick={() => router.back()}>
           <ChevronLeftIcon className="text-foreground/60" />
         </Button>
         <h1 className="text-4xl font-bold capitalize">{word}</h1>
-        <Button variant="ghost" size="icon" disabled={isLoading} onClick={handleFavorite}>
-          <StarIcon
-            fill={isFavorite ? 'yellow' : 'transparent'}
-            className={`${isFavorite ? 'text-foreground/60 dark:text-black size-8' : 'size-6'}`}
-          />
-        </Button>
+        <FavoriteButton word={word} />
       </div>
       <Separator className="my-4" />
       <motion.div

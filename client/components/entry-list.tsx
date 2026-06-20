@@ -19,9 +19,16 @@ interface EntryListProps {
   page: number;
   setPage: (page: number) => void;
   isLoading: boolean;
+  includeFavorite?: boolean;
 }
 
-export default function EntryList({ data, page, setPage, isLoading }: EntryListProps) {
+export default function EntryList({
+  data,
+  page,
+  setPage,
+  isLoading,
+  includeFavorite = false,
+}: EntryListProps) {
   const entries = data?.results;
   const { hasNext, hasPrev, totalPages } = data ?? {};
 
@@ -31,7 +38,9 @@ export default function EntryList({ data, page, setPage, isLoading }: EntryListP
     <div className="flex flex-col gap-4">
       <ul className="flex flex-col gap-4 mt-6">
         {entries && entries.length > 0 ? (
-          entries.map((entry, idx) => <EntryItem key={idx} entry={entry} idx={idx} />)
+          entries.map((entry, idx) => (
+            <EntryItem key={idx} entry={entry} idx={idx} includeFavorite={includeFavorite} />
+          ))
         ) : (
           <li className="text-muted-foreground text-center">No entries found.</li>
         )}

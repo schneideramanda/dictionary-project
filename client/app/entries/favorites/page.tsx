@@ -16,9 +16,9 @@ export default function Favorites() {
         <Button variant="ghost" size="icon" onClick={() => router.back()}>
           <ChevronLeftIcon className="text-foreground/60" />
         </Button>
-        <h1 className="text-xl font-medium">User Word Favorites</h1>
+        <h1 className="text-xl font-medium">User Favorites Words</h1>
       </div>
-      <EntryList data={data} isLoading={isLoading} page={page} setPage={setPage} />
+      <EntryList data={data} isLoading={isLoading} page={page} setPage={setPage} includeFavorite />
     </div>
   );
 }
