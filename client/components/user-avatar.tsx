@@ -12,35 +12,29 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { useCurrentUser } from '@/hooks/useUser';
 import { logoutAction } from '@/app/actions/auth';
+import { getUserInitials } from '@/lib/utils';
 
 export default function UserAvatar() {
   const router = useRouter();
-  const { user, mutate } = useCurrentUser();
+  const { user, mutate, isUnauthenticated } = useCurrentUser();
 
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
 
-  const initials = user
-    ? user.name
-        .split(' ')
-        .map(part => part[0])
-        .join('')
-    : '';
-
   const handleLogout = () => {
     startTransition(async () => {
-      await logoutAction();
       mutate(undefined, { revalidate: false });
+      await logoutAction();
     });
   };
 
-  if (!user) return null;
+  if (!user || isUnauthenticated) return null;
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger>
         <Avatar className="flex items-center justify-center text-accent dark:text-white bg-input/30">
-          {initials}
+          {getUserInitials(user?.name ?? '')}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

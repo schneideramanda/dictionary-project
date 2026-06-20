@@ -4,11 +4,22 @@ import useSWR from 'swr';
 import { useState } from 'react';
 import type { PaginatedResult, PaginationParams, User, WordEntry } from '../types/api';
 import { buildQuery } from '@/lib/pagination';
-import { fetcher } from '@/lib/client';
+import { ClientApiError, fetcher } from '@/lib/client';
 
 export function useCurrentUser() {
-  const { data, error, isLoading, mutate } = useSWR<User>('/user/me', fetcher);
-  return { user: data, error, isLoading, mutate };
+  const { data, error, isLoading, mutate } = useSWR<User>('/user/me', fetcher, {
+    shouldRetryOnError: err => {
+      if (err instanceof ClientApiError && (err.status === 401 || err.status === 403)) {
+        return false;
+      }
+      return true;
+    },
+  });
+
+  const isUnauthenticated =
+    error instanceof ClientApiError && (error.status === 401 || error.status === 403);
+
+  return { user: data, error, isLoading, isUnauthenticated, mutate };
 }
 
 export function useMyHistory(initial: PaginationParams = { page: 1, limit: 20 }) {

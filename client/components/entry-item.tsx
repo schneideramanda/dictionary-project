@@ -1,10 +1,14 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { ChevronRightIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Card } from './ui/card';
+import { WordEntry } from '@/types/api';
+import { format as formatDate } from 'date-fns';
 
 interface EntryItemProps {
-  entry: string;
+  entry: string | WordEntry;
   idx: number;
 }
 
@@ -16,23 +20,31 @@ export default function EntryItem({ entry, idx }: EntryItemProps) {
     animate: { x: 5 },
   };
 
+  const itemDetails = {
+    word: typeof entry === 'string' ? entry : entry.word,
+    date: typeof entry === 'string' ? null : formatDate(entry.added, 'PPPPp'),
+  };
+
   return (
     <motion.li
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.5,
+        duration: 0.3,
         delay: idx * 0.1,
       }}>
       <Card
         className="p-4 border-b border-secondary/60 cursor-pointer dark:hover:bg-card/80 bg-primary/20 hover:bg-primary/10 dark:bg-card"
-        onClick={() => router.push(`/entries/${entry}`)}>
+        onClick={() => router.push(`/entries/${itemDetails.word}`)}>
         <motion.div
           className="flex justify-between items-center"
           initial="initial"
           animate="initial"
           whileHover="animate">
-          <p className="text-lg font-medium capitalize">{entry}</p>
+          <div className="flex flex-col gap-1">
+            <p className="text-lg font-medium capitalize">{itemDetails?.word}</p>
+            {itemDetails?.date && <p className="text-sm text-foreground/60">{itemDetails.date}</p>}
+          </div>
           <motion.div variants={arrowAnimation}>
             <ChevronRightIcon className="text-foreground/40 size-4" />
           </motion.div>
