@@ -102,7 +102,8 @@ export default function SignIn() {
             type="submit"
             form="sign-in-form"
             className="w-full hover:bg-primary/80"
-            disabled={!form.formState.isValid || isPending}>
+            disabled={!form.formState.isValid || isPending}
+            aria-label="Sign In">
             {isPending ? 'Signing in...' : 'Sign In'}
           </Button>
           <p>

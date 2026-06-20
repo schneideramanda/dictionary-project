@@ -37,7 +37,10 @@ export default function Home() {
               <SearchIcon />
             </InputGroupAddon>
           </InputGroup>
-          <Button variant="ghost" onClick={() => router.push('/entries/history')}>
+          <Button
+            variant="ghost"
+            onClick={() => router.push('/entries/history')}
+            aria-label="History">
             <HistoryIcon />
           </Button>
         </div>
