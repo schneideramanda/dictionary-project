@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function WordDetailSkeleton() {
   return (
-    <div className="px-6 py-8">
+    <div>
       <div className="flex items-center justify-between">
         <Skeleton className="h-5 w-5" />
         <Skeleton className="h-10 w-40" />

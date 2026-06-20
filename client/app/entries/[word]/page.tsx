@@ -22,7 +22,7 @@ export default function WordDetail() {
   if (isLoading) return <WordDetailSkeleton />;
 
   return (
-    <div className="px-6 py-8">
+    <div>
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="icon" onClick={() => router.back()}>
           <ChevronLeftIcon className="text-foreground/60" />

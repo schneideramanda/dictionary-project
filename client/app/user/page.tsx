@@ -16,7 +16,7 @@ export default function UserDetail() {
 
   return (
     <motion.div
-      className="px-6 py-8 flex flex-col items-center justify-center"
+      className="flex flex-col items-center justify-center"
       initial={{ opacity: 0, x: -200 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ opacity: { duration: 0.8 }, x: { duration: 0.5 } }}>
@@ -26,7 +26,7 @@ export default function UserDetail() {
         </CardHeader>
         <CardContent className="flex flex-col w-full">
           <div className="flex flex-col gap-4 items-center">
-            <Avatar className="flex items-center justify-center size-16 text-xl font-semibold bg-secondary">
+            <Avatar className="flex items-center justify-center size-16 text-xl text-white font-semibold bg-secondary">
               {getUserInitials(user?.name ?? '')}
             </Avatar>
             <CopyContent value={user?.id ?? ''}>

@@ -7,11 +7,9 @@ if (!connectionString) {
   throw new Error('DATABASE_URL is not defined in your environment variables!');
 }
 
-const isLocalConnection = /localhost|127\.0\.0\.1|::1/.test(connectionString);
-
 const pool = new Pool({
   connectionString,
-  ssl: isLocalConnection ? false : { rejectUnauthorized: false },
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 const connectDB = async () => {

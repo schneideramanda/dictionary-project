@@ -35,7 +35,7 @@ export default function RootLayout({
         <Providers>
           <Toaster richColors />
           <Navbar />
-          {children}
+          <div className="max-w-4xl px-6 py-8 mx-auto w-full">{children}</div>
         </Providers>
       </body>
     </html>

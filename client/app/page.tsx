@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <main className="flex-1 px-6 py-8">
+      <main className="flex-1">
         <div className="flex items-center gap-2">
           <InputGroup className="h-10">
             <InputGroupInput
