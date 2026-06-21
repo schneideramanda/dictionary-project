@@ -1,10 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-import EntryItem from './entry-item';
-import { Pagination, PaginationContent, PaginationItem } from './ui/pagination';
-import { Skeleton } from './ui/skeleton';
+import EntryItem from './item';
 import { PaginatedResult, WordEntry } from '@/types/api';
 import { useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
+import { Pagination, PaginationContent, PaginationItem } from '../ui/pagination';
+import { Skeleton } from '../ui/skeleton';
 
 function ListSkeleton() {
   return Array.from({ length: 10 }).map((_, idx) => (
@@ -107,7 +107,8 @@ export default function EntryList({
             <PaginationItem
               onClick={() => setPage(page - 1)}
               aria-disabled={!hasPrev ? true : undefined}
-              className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
+              className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+              data-testid="pagination-previous">
               <ChevronLeftIcon aria-hidden="true" size={16} />
             </PaginationItem>
             <PaginationItem>
@@ -119,7 +120,8 @@ export default function EntryList({
             <PaginationItem
               onClick={() => setPage(page + 1)}
               aria-disabled={!hasNext ? true : undefined}
-              className="aria-disabled:pointer-events-none aria-disabled:opacity-50">
+              className="aria-disabled:pointer-events-none aria-disabled:opacity-50"
+              data-testid="pagination-next">
               <ChevronRightIcon aria-hidden="true" size={16} />
             </PaginationItem>
           </PaginationContent>

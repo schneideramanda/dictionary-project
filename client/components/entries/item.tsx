@@ -3,10 +3,10 @@
 import { motion } from 'framer-motion';
 import { ChevronRightIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Card } from './ui/card';
 import { WordEntry } from '@/types/api';
 import { format as formatDate } from 'date-fns';
-import FavoriteButton from './favorite-button';
+import { Card } from '../ui/card';
+import FavoriteButton from '../favorite-button';
 
 interface EntryItemProps {
   entry: string | WordEntry;

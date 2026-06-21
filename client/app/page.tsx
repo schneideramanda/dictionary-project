@@ -1,6 +1,6 @@
 'use client';
 
-import EntryList from '@/components/entry-list';
+import EntryList from '@/components/entries/list';
 import { Button } from '@/components/ui/button';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { useDebounce } from '@/hooks/useDebounce';

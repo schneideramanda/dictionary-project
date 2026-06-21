@@ -1,6 +1,6 @@
 'use client';
 
-import EntryList from '@/components/entry-list';
+import EntryList from '@/components/entries/list';
 import { Button } from '@/components/ui/button';
 import { useMyHistory } from '@/hooks/useUser';
 import { ChevronLeftIcon } from 'lucide-react';

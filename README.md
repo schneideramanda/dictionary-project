@@ -13,9 +13,9 @@ direto, sem entrar em funcionalidades mais avançadas (como filas, cache mais el
 automatizados, etc). Acredito que com mais tempo e prática conseguiria implementar essas questões
 caso necessário.
 
-Um ponto futuro para o front-end seria adicionar mais testes (principalmente E2E) e realizar mais
-testes de performance e buscar separar mais componentes, buscar o que precisa de memoização e outras
-melhorias.
+Um ponto futuro para o front-end seria adicionar mais testes, principalmente para componentes e
+realizar mais testes de performance e buscar separar mais componentes, buscar o que precisa de
+memoização e outras melhorias.
 
 ---
 
