@@ -22,7 +22,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { useSWRConfig } from 'swr';
 
-export default function SignUpPage() {
+export default function SignUp() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const { mutate } = useSWRConfig();
@@ -138,7 +138,8 @@ export default function SignUpPage() {
             type="submit"
             form="sign-up-form"
             className="w-full hover:bg-primary/80"
-            disabled={!form.formState.isValid || isPending}>
+            disabled={!form.formState.isValid || isPending}
+            aria-label="Sign Up">
             {isPending ? 'Creating an account...' : 'Sign Up'}
           </Button>
           <p>

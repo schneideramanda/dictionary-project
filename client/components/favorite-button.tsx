@@ -39,7 +39,12 @@ export default function FavoriteButton({ word }: FavoriteButtonProps) {
   const isLoading = favoritesLoading || isPending;
 
   return (
-    <Button variant="ghost" size="icon" disabled={isLoading} onClick={e => handleFavorite(e)}>
+    <Button
+      variant="ghost"
+      size="icon"
+      disabled={isLoading}
+      onClick={e => handleFavorite(e)}
+      aria-label="Favorite">
       <StarIcon
         fill={isFavorite ? 'yellow' : 'transparent'}
         className={`size-6 ${isFavorite ? 'text-foreground/60 dark:text-transparent' : ''}`}

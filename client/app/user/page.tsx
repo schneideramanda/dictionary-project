@@ -54,13 +54,15 @@ export default function UserDetail() {
         <Button
           className="flex-1 py-5"
           variant="outline"
-          onClick={() => router.push('/entries/favorites')}>
+          onClick={() => router.push('/entries/favorites')}
+          aria-label="Favorites">
           Favorites
         </Button>
         <Button
           className="flex-1 py-5"
           variant="outline"
-          onClick={() => router.push('/entries/history')}>
+          onClick={() => router.push('/entries/history')}
+          aria-label="History">
           History
         </Button>
       </div>

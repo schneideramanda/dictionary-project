@@ -24,7 +24,7 @@ export default function WordDetail() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+        <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="Back">
           <ChevronLeftIcon className="text-foreground/60" />
         </Button>
         <h1 className="text-4xl font-bold capitalize">{word}</h1>
@@ -43,7 +43,11 @@ export default function WordDetail() {
             <div key={idx} className="flex items-center gap-4">
               {phonetic.text && <p className="text-lg">{phonetic.text}</p>}
               {phonetic.audio && (
-                <audio controls style={{ maxHeight: 30 }}>
+                <audio
+                  controls
+                  style={{ maxHeight: 30 }}
+                  data-testid="audio-phonetics"
+                  aria-label="Phonetics">
                   <source src={phonetic.audio} type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>

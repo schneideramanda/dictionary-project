@@ -13,9 +13,9 @@ direto, sem entrar em funcionalidades mais avançadas (como filas, cache mais el
 automatizados, etc). Acredito que com mais tempo e prática conseguiria implementar essas questões
 caso necessário.
 
-Mesmo assim, queria entregar a aplicação de ponta a ponta, com autenticação, banco de dados real e
-uma API própria, ainda que mais simples, para mostrar que consigo transitar pelas diferentes partes
-do projeto.
+Um ponto futuro para o front-end seria adicionar mais testes (principalmente E2E) e realizar mais
+testes de performance e buscar separar mais componentes, buscar o que precisa de memoização e outras
+melhorias.
 
 ---
 
