@@ -49,10 +49,10 @@ const buildSearchClause = searchQuery => {
 
   return {
     countSql: 'SELECT COUNT(*)::int AS count FROM "Word" WHERE LOWER(text) LIKE $1',
-    countParams: [`${searchQuery}%`],
+    countParams: [`%${searchQuery}%`],
     listSql:
       'SELECT text FROM "Word" WHERE LOWER(text) LIKE $1 ORDER BY text ASC LIMIT $2 OFFSET $3',
-    listParamsBuilder: (limit, offset) => [`${searchQuery}%`, limit, offset],
+    listParamsBuilder: (limit, offset) => [`%${searchQuery}%`, limit, offset],
   };
 };
 

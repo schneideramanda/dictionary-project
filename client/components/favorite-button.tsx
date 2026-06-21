@@ -27,13 +27,14 @@ export default function FavoriteButton({ word }: FavoriteButtonProps) {
     if (isFavorite) {
       startTransition(async () => {
         await unfavoriteAction(word);
+        mutateFavorites(undefined, { revalidate: true });
       });
     } else {
       startTransition(async () => {
         await favoriteAction(word);
+        mutateFavorites(undefined, { revalidate: true });
       });
     }
-    mutateFavorites(undefined, { revalidate: true });
   };
 
   const isLoading = favoritesLoading || isPending;

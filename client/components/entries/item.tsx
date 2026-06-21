@@ -44,7 +44,7 @@ export default function EntryItem({ entry, idx, includeFavorite = false }: Entry
           animate="initial"
           whileHover="animate">
           <div className="flex flex-col gap-1">
-            <p className="text-lg font-medium capitalize">{itemDetails?.word}</p>
+            <p className="text-lg font-mono font-medium capitalize">{itemDetails?.word}</p>
             {itemDetails?.date && <p className="text-sm text-foreground/60">{itemDetails.date}</p>}
           </div>
           <div className="flex items-center gap-2">
