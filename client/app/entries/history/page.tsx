@@ -13,7 +13,7 @@ export default function History() {
   return (
     <div>
       <div className="flex items-center gap-2">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+        <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="Back">
           <ChevronLeftIcon className="text-foreground/60" />
         </Button>
         <h1 className="text-xl font-medium">User Word History</h1>

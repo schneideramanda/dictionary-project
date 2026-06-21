@@ -32,17 +32,17 @@ export default function UserAvatar() {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger aria-label="User Menu">
         <Avatar className="flex items-center justify-center text-accent dark:text-white bg-input/30">
           {getUserInitials(user?.name ?? '')}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => router.push('/user')}>
+        <DropdownMenuItem onClick={() => router.push('/user')} aria-label="View Profile">
           <UserIcon />
           View Profile
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={handleLogout} disabled={isPending}>
+        <DropdownMenuItem onClick={handleLogout} disabled={isPending} aria-label="Log Out">
           <LogOutIcon />
           {isPending ? 'Logging out...' : 'Log Out'}
         </DropdownMenuItem>
