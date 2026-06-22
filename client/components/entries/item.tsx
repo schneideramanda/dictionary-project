@@ -29,6 +29,7 @@ export default function EntryItem({ entry, idx, includeFavorite = false }: Entry
 
   return (
     <motion.li
+      data-testid="entry-item"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{

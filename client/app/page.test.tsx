@@ -15,7 +15,7 @@ jest.mock('@/hooks/useEntries', () => ({
 }));
 const useEntriesMock = useEntries as jest.MockedFunction<typeof useEntries>;
 
-jest.mock('@/components/entry-list', () => ({
+jest.mock('@/components/entries/list', () => ({
   __esModule: true,
   default: () => null,
 }));

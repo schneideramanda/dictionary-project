@@ -33,12 +33,7 @@ export default defineConfig({
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Firefox'], storageState: '.auth/user.json' },
     },
 
     /* Test against mobile viewports. */

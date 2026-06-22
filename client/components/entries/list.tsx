@@ -88,7 +88,7 @@ export default function EntryList({
 
   return (
     <div className="flex flex-col gap-4">
-      <ul className="flex flex-col gap-10 mt-6">
+      <ul className="flex flex-col gap-10 mt-6" data-testid="entry-list">
         {entries && entries.length > 0 ? (
           isWordIndex ? (
             sortedLetters.map(letter => (

@@ -43,10 +43,10 @@ O projeto está dividido em duas partes principais:
 
 ```
 .
-├── server/              # Aplicação back-end (Node)
+├── server/              # Aplicação back-end
 │   └── db/
 │       └── schema.sql   # Definição das tabelas do Postgres
-└── client/              # Aplicação front-end (Next.js)
+└── client/              # Aplicação front-end
 ```
 
 Cada uma das pastas possui suas próprias dependências e variáveis de ambiente, e deve ser
@@ -118,10 +118,6 @@ NEXT_PUBLIC_API_URL=http://localhost:5001
   **client**
 - Gerenciador de pacotes de sua preferência (`npm`, `yarn` ou `pnpm`)
 
-> Todo o backend (Node + Redis + Postgres) roda via Docker Compose — não é necessário instalar nem
-> configurar nenhum banco de dados manualmente. Apenas é preciso carregar o schema uma vez (ver
-> passo 3 abaixo).
-
 ### 1. Clonar o repositório
 
 ```bash
@@ -134,9 +130,6 @@ cd <nome-do-projeto>
 ```bash
 cd server
 cp .env.example .env
-# preencha o .env conforme a seção "Configuração das variáveis de ambiente"
-# (DATABASE_URL e REDIS_URL são sobrescritas automaticamente pelo docker-compose
-# e não precisam ser alteradas para rodar localmente)
 
 cd ..
 docker compose up -d --build
@@ -152,30 +145,11 @@ Esse comando sobe três containers:
 
 A API ficará disponível em `http://localhost:5001`.
 
-Para acompanhar os logs:
+### 3. Popular o banco
 
-```bash
-docker compose logs -f backend
-```
-
-Para parar os containers:
-
-```bash
-docker compose down
-```
-
-### 3. Criar as tabelas e popular o banco
-
-Na primeira vez que subir o projeto (banco ainda vazio), é necessário criar as tabelas a partir do
-`server/db/schema.sql`:
-
-```bash
-docker exec -i dictionary-postgres psql -U postgres -d dictionary < server/db/schema.sql
-```
-
-Em seguida, popule a tabela `Word` com a lista de palavras em inglês. Esse comando deve ser rodado
-**dentro do container do backend** (e não diretamente no seu terminal local), pois é lá que a
-variável `DATABASE_URL` está configurada corretamente pelo Docker Compose:
+Na primeira vez que rodar o projeto, popule a tabela `Word` com a lista de palavras em inglês. Esse
+comando deve ser rodado **dentro do container do backend** (e não diretamente no seu terminal
+local), pois é lá que a variável `DATABASE_URL` está configurada corretamente pelo Docker Compose:
 
 ```bash
 docker exec -it dictionary-backend npm run import:words
@@ -189,7 +163,7 @@ O client roda fora do Docker, diretamente com Node:
 cd client
 npm install
 cp .env.example .env.local
-# preencha o .env.local conforme a seção "Configuração das variáveis de ambiente"
+
 npm run dev
 ```
 
@@ -201,4 +175,16 @@ Com o server e o client rodando, acesse:
 
 ```
 http://localhost:3000
+```
+
+## 🧪 Rodando testes
+
+Para rodar os testes dentro do front
+
+```bash
+npm run build
+npm run start
+
+npm run test
+npm run test:e2e
 ```
